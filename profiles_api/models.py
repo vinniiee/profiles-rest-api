@@ -12,10 +12,10 @@ class UserProfileManager(BaseUserManager):
         if not email:
             raise ValueError('User must have an email address')
 
-        email = self.normalize_email(email)
-        user = self.model(email=email, name=name)
+        email = self.normalize_email(email) # makes 2nd half of the email address all lower case
+        user = self.model(email=email, name=name)  # to make a model for name and email
 
-        user.set_password(password)
+        user.set_password(password)  # for properly saving password with hashing
         user.save(using=self._db)
 
         return user
@@ -38,7 +38,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
     objects = UserProfileManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'email'    #to work with django-admin, django-authentication system
     REQUIRED_FIELDS = ['name']
 
     def get_full_name(self):
